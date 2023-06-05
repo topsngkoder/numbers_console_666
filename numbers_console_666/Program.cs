@@ -1,10 +1,16 @@
-﻿namespace numbers_console_666
+﻿namespace Client
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            Console.WriteLine("Hello, World!");
+            var allLevels = new LevelsFileReader();
+
+            int currentLevel = 0;
+
+            Game game = new Game(allLevels.ReadAllSolutions());
+
+            game.Start(currentLevel);
         }
     }
 }
