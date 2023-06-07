@@ -1,186 +1,174 @@
-﻿
-using Client;
-
-public class Game
+﻿namespace Client
 {
-    List<Solution> allLevels = new List<Solution>();
-
-    int currentLevel = 0;
-
-    public Game(List<Solution> levels)
+    public class Game
     {
-        allLevels = levels;
-    }
+        List<Solution> allLevels = new List<Solution>();
+        int currentLevel = 0;
 
-
-    internal void Start(int currentLevel)
-    {
-        var target = 10;
-
-        var formatedTask = GenerateTask(allLevels[currentLevel]);
-
-        Play(10, formatedTask);
-
-        var test = Console.ReadLine();
-
-        FindResult(test);
-    }
-
-    private void Play(int target, string taskNumbers)
-    {
-        Console.Clear();
-        Console.WriteLine($"Получите 10 из чисел: {taskNumbers}");
-
-        var answerInput = Console.ReadLine();
-        var answer = ConvertInputAnswer(answerInput);
-        var isSucces = answer == target;
-
-        if (isSucces)
+        public Game(List<Solution> levels)
         {
-            Console.WriteLine("Поздравляем, все верно! Для продолжения игры нажмите Enter");
-            Console.ReadLine();
-            currentLevel ++;
-            Start(currentLevel);
+            allLevels = levels;
         }
-        else
+
+        internal void Start(int currentLevel)
         {
-            Console.WriteLine("Ответ неправильный! Чтобы попытаться еще раз нажмите Enter");
-            Console.ReadLine();
-            Play(target, taskNumbers);
+            var target = 10;
+
+            var formatedTask = GenerateTask(allLevels[currentLevel]);
+
+            Play(10, formatedTask);
+
+            var test = Console.ReadLine();
+
+            FindResult(test);
         }
-    }
 
-
-    private int FindResult(string inputString)
-    {
-        var ListOfNumbers = new List<int>();
-        var ListOfChar = new List<char>();
-        var stringNumber = "";
-
-        for (int i = 0; i < inputString.Length; i++)
+        private void Play(int target, string taskNumbers)
         {
-            if (int.TryParse(inputString[i].ToString(), out var d))
+            Console.Clear();
+            Console.WriteLine($"Получите 10 из чисел: {taskNumbers}");
+
+            var answerInput = Console.ReadLine();
+            var answer = ConvertInputAnswer(answerInput);
+            var isSucces = answer == target;
+
+            if (isSucces)
             {
-                stringNumber += inputString[i];
-                if ((i + 1) == inputString.Length)
-                {
-                    ListOfNumbers.Add(int.Parse(stringNumber));
-                }
+                Console.WriteLine("Поздравляем, все верно! Для продолжения игры нажмите Enter");
+                Console.ReadLine();
+                currentLevel++;
+                Start(currentLevel);
             }
             else
             {
-                ListOfNumbers.Add(int.Parse(stringNumber));
-                stringNumber = "";
-                ListOfChar.Add(inputString[i]);
+                Console.WriteLine("Ответ неправильный! Чтобы попытаться еще раз нажмите Enter");
+                Console.ReadLine();
+                Play(target, taskNumbers);
             }
         }
-        var res = ListOfNumbers[0];
 
-        for (int i = 1; i < ListOfNumbers.Count; i++)
+        private int FindResult(string inputString)
         {
-            var operationResult = Operation(res, ListOfNumbers[i], ListOfChar[i - 1]);
-            if (operationResult.Status == OperationResult.ResultStatus.DivideByZero)
+            var ListOfNumbers = new List<int>();
+            var ListOfChar = new List<char>();
+            var stringNumber = "";
+
+            for (int i = 0; i < inputString.Length; i++)
             {
-                Console.WriteLine("Деление на 0 - ОШИБКА!");
-                return -1;
-            }
-            if (operationResult.Status == OperationResult.ResultStatus.NotFullNumberResult)
-            {
-                Console.WriteLine("Не делится - ОШИБКА!");
-                return -2;
-            }
-            res = operationResult.Result;
-        }
-
-        Console.WriteLine(res.ToString());
-        return res;
-    }
-
-
-    private string GenerateTask(Solution level)
-    {
-        return level.GetLevel();
-    }
-
-    private int ConvertInputAnswer(string answerInput)
-    {
-        return FindResult(answerInput);
-    }
-
-    int FindTheNumber(string a)
-    {
-        string res = "";
-        foreach (var item in a)
-        {
-            if (int.TryParse(item.ToString(), out var d))
-            {
-                res += item.ToString();
-            }
-            else return int.Parse(res);
-        }
-        return int.Parse(res);
-    }
-
-
-
-    OperationResult Operation(int a, int b, char oper)
-    {
-        switch (oper)
-        {
-            case '+':
-                return new OperationResult()
+                if (int.TryParse(inputString[i].ToString(), out var d))
                 {
-                    Result = a + b,
-                    Status = OperationResult.ResultStatus.Success
-                };
-            case '-':
-                return new OperationResult()
-                {
-                    Result = a - b,
-                    Status = OperationResult.ResultStatus.Success
-                };
-            case '*':
-                return new OperationResult()
-                {
-                    Result = a * b,
-                    Status = OperationResult.ResultStatus.Success
-                };
-            case '/':
-                {
-                    if (b == 0)
+                    stringNumber += inputString[i];
+                    if ((i + 1) == inputString.Length)
                     {
-                        return new OperationResult()
+                        ListOfNumbers.Add(int.Parse(stringNumber));
+                    }
+                }
+                else
+                {
+                    ListOfNumbers.Add(int.Parse(stringNumber));
+                    stringNumber = "";
+                    ListOfChar.Add(inputString[i]);
+                }
+            }
+
+            var result = ListOfNumbers[0];
+
+            for (int i = 1; i < ListOfNumbers.Count; i++)
+            {
+                var operationResult = Operation(result, ListOfNumbers[i], ListOfChar[i - 1]);
+                if (operationResult.Status == OperationResult.ResultStatus.DivideByZero)
+                {
+                    Console.WriteLine("Деление на 0 - ОШИБКА!");
+                    return -1;
+                }
+                if (operationResult.Status == OperationResult.ResultStatus.NotFullNumberResult)
+                {
+                    Console.WriteLine("Не делится - ОШИБКА!");
+                    return -2;
+                }
+                result = operationResult.Result;
+            }
+
+            Console.WriteLine(result.ToString());
+            return result;
+        }
+
+        private string GenerateTask(Solution level)
+        {
+            return level.GetLevel();
+        }
+
+        private int ConvertInputAnswer(string answerInput)
+        {
+            return FindResult(answerInput);
+        }
+
+        int FindTheNumber(string a)
+        {
+            string res = "";
+            foreach (var item in a)
+            {
+                if (int.TryParse(item.ToString(), out var d))
+                {
+                    res += item.ToString();
+                }
+                else return int.Parse(res);
+            }
+            return int.Parse(res);
+        }
+
+        OperationResult Operation(int a, int b, char oper)
+        {
+            switch (oper)
+            {
+                case '+':
+                    return new OperationResult()
+                    {
+                        Result = a + b,
+                        Status = OperationResult.ResultStatus.Success
+                    };
+                case '-':
+                    return new OperationResult()
+                    {
+                        Result = a - b,
+                        Status = OperationResult.ResultStatus.Success
+                    };
+                case '*':
+                    return new OperationResult()
+                    {
+                        Result = a * b,
+                        Status = OperationResult.ResultStatus.Success
+                    };
+                case '/':
+                    {
+                        if (b == 0)
                         {
-                            Status = OperationResult.ResultStatus.DivideByZero,
+                            return new OperationResult()
+                            {
+                                Status = OperationResult.ResultStatus.DivideByZero,
+                            };
+                        }
+                        else if (a % b == 0)
+
+                            return new OperationResult()
+                            {
+                                Result = a / b,
+                                Status = OperationResult.ResultStatus.Success
+                            };
+                        else return new OperationResult()
+                        {
+                            Status = OperationResult.ResultStatus.NotFullNumberResult
                         };
                     }
-                    else if (a % b == 0)
-
-                        return new OperationResult()
-                        {
-                            Result = a / b,
-                            Status = OperationResult.ResultStatus.Success
-                        };
-                    else return new OperationResult()
-                    {
-                        Status = OperationResult.ResultStatus.NotFullNumberResult
-                    };
-                }
-            default: throw new Exception("Operator not found");
+                default: throw new Exception("Operator not found");
+            }
         }
     }
+
+    class OperationResult
+    {
+        public int Result;
+        public ResultStatus Status;
+        public enum ResultStatus { Success, DivideByZero, NotFullNumberResult }
+    }
 }
-
-
-class OperationResult
-{
-    public int Result;
-    public ResultStatus Status;
-
-    public enum ResultStatus { Success, DivideByZero, NotFullNumberResult }
-
-}
-
-
-
-
