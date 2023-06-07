@@ -1,19 +1,21 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace Client
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class Solution : IComparable<Solution>
     {
+        Random num = new Random();
         [JsonProperty("numbers")] private int[] numbers;
         [JsonProperty("operators")] private char[] operators;
-        [JsonProperty("target")] private int target;
+        //[JsonProperty("target")] private int target;
 
         public Solution(int[] numbers, char[] operators, int target)
         {
             this.numbers = numbers;
             this.operators = operators;
-            this.target = target;
+            //this.target = target;
         }
 
         public override string ToString()
@@ -25,7 +27,20 @@ namespace Client
 
         public string GetLevel()
         {
-            return String.Join(",", numbers);
+            var shuffleList = new List<int>();
+
+            foreach (var number in numbers)
+            {
+                int random = num.Next(2);
+                shuffleList.Add(number);
+                if (random > 0)
+                {
+                    shuffleList.Reverse();
+                }
+            }
+
+
+            return (String.Join("", shuffleList));
         }
 
         public int CompareTo(Solution other)

@@ -3,7 +3,8 @@
     public class Game
     {
         List<Solution> allLevels = new List<Solution>();
-        int currentLevel = 0;
+        int currentLevel = 1;
+        Random randomLevel = new Random();
 
         public Game(List<Solution> levels)
         {
@@ -14,13 +15,13 @@
         {
             var target = 10;
 
-            var formatedTask = GenerateTask(allLevels[currentLevel]);
+            var formatedTask = GenerateTask(allLevels[randomLevel.Next(0,allLevels.Count)]);
 
             Play(10, formatedTask);
 
-            var test = Console.ReadLine();
+            var userAnswer = Console.ReadLine();
 
-            FindResult(test);
+            FindResult(userAnswer);
         }
 
         private void Play(int target, string taskNumbers)
@@ -171,4 +172,6 @@
         public ResultStatus Status;
         public enum ResultStatus { Success, DivideByZero, NotFullNumberResult }
     }
+
+    
 }
