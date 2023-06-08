@@ -3,57 +3,66 @@
     public class Game
     {
         List<Solution> allLevels = new List<Solution>();
-        int currentLevel = 1;
-        Random randomLevel = new Random();
+        int target = 10;
+        bool endGame = false;
+
 
         public Game(List<Solution> levels)
         {
             allLevels = levels;
         }
 
-        internal void Start(int currentLevel)
+        
+        public bool EndGame()
         {
-            var target = 10;
-
-            var formatedTask = GenerateTask(allLevels[randomLevel.Next(0,allLevels.Count)]);
-
-            Play(10, formatedTask);
-
-            var userAnswer = Console.ReadLine();
-
-            FindResult(userAnswer);
+            return endGame;
         }
 
-        private void Play(int target, string taskNumbers)
+        public void Play(int currentLevel)
         {
+            var formatedTask = GenerateTask(allLevels[currentLevel]);
+
             Console.Clear();
-            Console.WriteLine($"Получите 10 из чисел: {taskNumbers}");
+
+            Console.WriteLine($"Получите 10 из чисел: {formatedTask}");
+            Console.WriteLine($"Ответ вводите в формате a+b+c+d. Для выхода введите 10");
 
             var answerInput = Console.ReadLine();
-            var answer = ConvertInputAnswer(answerInput);
-            var isSucces = answer == target;
+            
+            if (answerInput == "")
+            {
+                Console.WriteLine("Введите ответ!");
+                Play(currentLevel);
+            }
+            if (answerInput == "10")
+            {
+                endGame = true;
+                return;
+            }
 
-            if (isSucces)
+            var answer = CalculationResult(answerInput);
+
+            var isAnswerCorrect = answer == target;
+
+            if (isAnswerCorrect)
             {
                 Console.WriteLine("Поздравляем, все верно! Для продолжения игры нажмите Enter");
                 Console.ReadLine();
-                currentLevel++;
-                Start(currentLevel);
             }
             else
             {
                 Console.WriteLine("Ответ неправильный! Чтобы попытаться еще раз нажмите Enter");
                 Console.ReadLine();
-                Play(target, taskNumbers);
+                Play(currentLevel);
             }
         }
 
-        private int FindResult(string inputString)
+        private int? CalculationResult(string inputString)
         {
             var ListOfNumbers = new List<int>();
             var ListOfChar = new List<char>();
             var stringNumber = "";
-
+            
             for (int i = 0; i < inputString.Length; i++)
             {
                 if (int.TryParse(inputString[i].ToString(), out var d))
@@ -77,6 +86,7 @@
             for (int i = 1; i < ListOfNumbers.Count; i++)
             {
                 var operationResult = Operation(result, ListOfNumbers[i], ListOfChar[i - 1]);
+
                 if (operationResult.Status == OperationResult.ResultStatus.DivideByZero)
                 {
                     Console.WriteLine("Деление на 0 - ОШИБКА!");
@@ -89,8 +99,6 @@
                 }
                 result = operationResult.Result;
             }
-
-            Console.WriteLine(result.ToString());
             return result;
         }
 
@@ -99,24 +107,6 @@
             return level.GetLevel();
         }
 
-        private int ConvertInputAnswer(string answerInput)
-        {
-            return FindResult(answerInput);
-        }
-
-        int FindTheNumber(string a)
-        {
-            string res = "";
-            foreach (var item in a)
-            {
-                if (int.TryParse(item.ToString(), out var d))
-                {
-                    res += item.ToString();
-                }
-                else return int.Parse(res);
-            }
-            return int.Parse(res);
-        }
 
         OperationResult Operation(int a, int b, char oper)
         {
