@@ -2,25 +2,25 @@
 {
     public class Game
     {
-        List<Solution> allLevels = new List<Solution>();
-        int target = 10;
-        bool endGame = false;
 
+        private int target = 10;
+        private bool endGame = true;
+        private LevelsManager _levelsManager;
 
-        public Game(List<Solution> levels)
+        public Game(List<Solution> allLevels)
         {
-            allLevels = levels;
+             _levelsManager = new LevelsManager(allLevels);
         }
 
-        
-        public bool EndGame()
+        public bool isPlaying()
         {
             return endGame;
         }
 
-        public void Play(int currentLevel)
+        public void Play()
         {
-            var formatedTask = GenerateTask(allLevels[currentLevel]);
+            var currentSolution = _levelsManager.GetCurrentSolution();
+            var formatedTask = GenerateTask(currentSolution);
 
             Console.Clear();
 
@@ -32,11 +32,11 @@
             if (answerInput == "")
             {
                 Console.WriteLine("Введите ответ!");
-                Play(currentLevel);
+                Play();
             }
             if (answerInput == "10")
             {
-                endGame = true;
+                endGame = false;
                 return;
             }
 
@@ -53,7 +53,7 @@
             {
                 Console.WriteLine("Ответ неправильный! Чтобы попытаться еще раз нажмите Enter");
                 Console.ReadLine();
-                Play(currentLevel);
+                Play();
             }
         }
 

@@ -6,24 +6,16 @@ namespace Client
     {
         public static void Main()
         {
-            var allLevels = new LevelsFileReader();
-            Random random = new Random();
+            var levelsReader = new LevelsFileReader();
 
-            ProgressTracker progressTracker = new ProgressTracker();
+            var allLevels = levelsReader.ReadAllSolutions();
 
-            int currentLevel = 0;
+            var game = new Game(allLevels);
 
-            Game game = new Game(allLevels.ReadAllSolutions());
-            
-            while (!game.EndGame())
+            while (game.isPlaying())
             {
-                game.Play(currentLevel);
-                progressTracker.LevelComlete(currentLevel);
-                currentLevel++;
+                game.Play();
             }
         }
-
-
-
     }
 }

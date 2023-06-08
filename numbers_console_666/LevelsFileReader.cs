@@ -11,7 +11,7 @@ namespace Client
         //    var levels = JsonConvert.DeserializeObject<List<List<int>>>(json);
         //    return levels;
         //}
-        internal List<Solution> ReadAllSolutions()
+        public List<Solution> ReadAllSolutions()
         {
             var path = Pathes.LevelsPath;
             var json = File.ReadAllText(path);
