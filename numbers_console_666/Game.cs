@@ -106,7 +106,7 @@
 
         private string GenerateTask(Level level)
         {
-            return level.GetLevel();
+            return level.GetShuffledLevel();
         }
 
         OperationResult Operation(int a, int b, char oper)

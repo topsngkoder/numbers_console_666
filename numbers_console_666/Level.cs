@@ -25,7 +25,7 @@ namespace Client
             return numbersString + operatorsString;
         }
 
-        public string GetLevel()
+        public string GetShuffledLevel()
         {
             var shuffleList = new List<int>();
 
