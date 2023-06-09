@@ -2,22 +2,22 @@
 {
     public class ProgressTracker
     {
-        private List<int> completeLevels = new List<int>();
+        private List<int> _completeLevels = new List<int>();
 
         public List<int> GetCompleteLevels()
         {
-            return completeLevels;
+            return _completeLevels;
         }
 
 
         public void LevelComlete(int level)
         {
-            completeLevels.Add(level);
+            _completeLevels.Add(level);
         }
 
         public bool IsLevelCopmplete(int level)
         {
-            return completeLevels.Contains(level);
+            return _completeLevels.Contains(level);
         }
 
 

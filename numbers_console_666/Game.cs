@@ -3,8 +3,8 @@
     public class Game
     {
 
-        private int target = 10;
-        private bool endGame = true;
+        private int _target = 10;
+        private bool _endGame = true;
         private LevelsManager _levelsManager;
 
         public Game(List<Solution> allLevels)
@@ -14,7 +14,7 @@
 
         public bool isPlaying()
         {
-            return endGame;
+            return _endGame;
         }
 
         public void Play()
@@ -36,13 +36,13 @@
             }
             if (answerInput == "10")
             {
-                endGame = false;
+                _endGame = false;
                 return;
             }
 
             var answer = CalculationResult(answerInput);
 
-            var isAnswerCorrect = answer == target;
+            var isAnswerCorrect = answer == _target;
 
             if (isAnswerCorrect)
             {
