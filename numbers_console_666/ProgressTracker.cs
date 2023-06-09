@@ -9,14 +9,9 @@
             return _completeLevels;
         }
 
-        public void LevelComlete(int level)
+        public void LevelComlete(int levelHashCode)
         {
-            _completeLevels.Add(level);
-        }
-
-        public bool IsLevelCopmplete(int level)
-        {
-            return _completeLevels.Contains(level);
+            _completeLevels.Add(levelHashCode);
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Client
         //    var levels = JsonConvert.DeserializeObject<List<List<int>>>(json);
         //    return levels;
         //}
-        public List<Solution> ReadAllSolutions()
+        public List<Level> ReadAllSolutions()
         {
             var path = Pathes.LevelsPath;
             var json = File.ReadAllText(path);
-            var levels = JsonConvert.DeserializeObject<List<Solution>>(json);
+            var levels = JsonConvert.DeserializeObject<List<Level>>(json);
             return levels;
         }
     }

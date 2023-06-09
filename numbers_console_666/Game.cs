@@ -6,10 +6,11 @@
         private int _target = 10;
         private bool _endGame = true;
         private LevelsManager _levelsManager;
+        private ProgressTracker _progressTracker = new ProgressTracker();
 
-        public Game(List<Solution> allLevels)
+        public Game(List<Level> allLevels)
         {
-             _levelsManager = new LevelsManager(allLevels);
+             _levelsManager = new LevelsManager(allLevels, _progressTracker);
         }
 
         public bool isPlaying()
@@ -47,6 +48,7 @@
             if (isAnswerCorrect)
             {
                 Console.WriteLine("Поздравляем, все верно! Для продолжения игры нажмите Enter");
+                _progressTracker.LevelComlete(currentSolution.GetHashCode());
                 Console.ReadLine();
             }
             else
@@ -102,7 +104,7 @@
             return result;
         }
 
-        private string GenerateTask(Solution level)
+        private string GenerateTask(Level level)
         {
             return level.GetLevel();
         }

@@ -4,14 +4,14 @@ using System;
 namespace Client
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class Solution : IComparable<Solution>
+    public class Level : IComparable<Level>
     {
         Random num = new Random();
         [JsonProperty("numbers")] private int[] numbers;
         [JsonProperty("operators")] private char[] operators;
         //[JsonProperty("target")] private int target;
 
-        public Solution(int[] numbers, char[] operators, int target)
+        public Level(int[] numbers, char[] operators, int target)
         {
             this.numbers = numbers;
             this.operators = operators;
@@ -38,12 +38,10 @@ namespace Client
                     shuffleList.Reverse();
                 }
             }
-
-
             return (String.Join("", shuffleList));
         }
 
-        public int CompareTo(Solution other)
+        public int CompareTo(Level other)
         {
             var sortedThis = this.numbers.OrderBy(n => n).ToArray();
             var sortedOther = other.numbers.OrderBy(n => n).ToArray();
@@ -61,6 +59,7 @@ namespace Client
             }
             return 0;
         }
+
         public override bool Equals(object? obj)
         {
             if (obj == null)
@@ -69,6 +68,7 @@ namespace Client
             }
             return this.GetHashCode() == obj.GetHashCode();
         }
+
         public override int GetHashCode()
         {
             var sortedSolutionNumbersList = numbers.OrderBy(n => n).ToArray();

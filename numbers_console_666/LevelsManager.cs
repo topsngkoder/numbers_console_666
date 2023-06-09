@@ -5,18 +5,17 @@ namespace Client
 {
     public class LevelsManager
     {
-        private List<Solution> _allLevels = new List<Solution>();
-
-        public LevelsManager(List<Solution> levels)
-        {
-            _allLevels = levels;
-        }
-
+        private readonly ProgressTracker _progressTracker;
+        private List<Level> _allLevels = new List<Level>();
         Random _random = new Random();
 
-        private ProgressTracker _progressTracker = new ProgressTracker();
+        public LevelsManager(List<Level> levels, ProgressTracker progressTracker)
+        {
+            _allLevels = levels;
+            _progressTracker = progressTracker;
+        }
 
-        public Solution GetCurrentSolution()
+        public Level GetCurrentSolution()
         {
             var completedLevels = _progressTracker.GetCompleteLevels();
 
