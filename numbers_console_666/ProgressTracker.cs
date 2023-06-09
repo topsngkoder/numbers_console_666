@@ -9,7 +9,6 @@
             return _completeLevels;
         }
 
-
         public void LevelComlete(int level)
         {
             _completeLevels.Add(level);
@@ -19,8 +18,5 @@
         {
             return _completeLevels.Contains(level);
         }
-
-
     }
-    
 }

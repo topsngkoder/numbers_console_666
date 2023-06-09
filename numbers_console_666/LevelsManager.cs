@@ -18,8 +18,6 @@ namespace Client
 
         public Solution GetCurrentSolution()
         {
-
-
             var completedLevels = _progressTracker.GetCompleteLevels();
 
             var validLevels = _allLevels.Where(solution =>
@@ -29,21 +27,17 @@ namespace Client
             }
             ).ToList();
 
-
             int validLevelsCount = validLevels.Count();
-            
+
             if (validLevelsCount <= 0)
             {
                 throw new Exception("No availible levels");
             }
-            
+
             int nextLevel = _random.Next(0, validLevelsCount);
-                        
+
             return validLevels[nextLevel];
         }
-
-
-
     }
 
 }

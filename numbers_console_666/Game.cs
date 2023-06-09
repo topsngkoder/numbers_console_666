@@ -107,7 +107,6 @@
             return level.GetLevel();
         }
 
-
         OperationResult Operation(int a, int b, char oper)
         {
             switch (oper)
